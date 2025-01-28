@@ -1,0 +1,86 @@
+package vocationaltraininghub;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class VocationalTrainingHub extends JFrame {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
+    public VocationalTrainingHub() {
+        setTitle("Vocational Training Hub");
+        setSize(800, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Menu bar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        JMenuItem homeItem = new JMenuItem("Home");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        menu.add(homeItem);
+        menu.add(exitItem);
+        menuBar.add(menu);
+        setJMenuBar(menuBar);
+
+        // Main Panel with CardLayout
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        // Home Panel
+        JPanel homePanel = new JPanel();
+        homePanel.setLayout(new GridLayout(3, 1));
+        JButton tailoringButton = new JButton("Tailoring Tutorials");
+        JButton carpentryButton = new JButton("Carpentry Tutorials");
+        JButton electronicsButton = new JButton("Electronics Tutorials");
+
+        homePanel.add(tailoringButton);
+        homePanel.add(carpentryButton);
+        homePanel.add(electronicsButton);
+
+        // Tutorial Panels
+        JPanel tailoringPanel = createTutorialPanel("Tailoring Tutorials", "Learn how to stitch and design clothes.");
+        JPanel carpentryPanel = createTutorialPanel("Carpentry Tutorials", "Learn to create furniture and wooden structures.");
+        JPanel electronicsPanel = createTutorialPanel("Electronics Tutorials", "Learn basic electronics and repair skills.");
+
+        // Adding Panels to CardLayout
+        mainPanel.add(homePanel, "Home");
+        mainPanel.add(tailoringPanel, "Tailoring");
+        mainPanel.add(carpentryPanel, "Carpentry");
+        mainPanel.add(electronicsPanel, "Electronics");
+
+        add(mainPanel, BorderLayout.CENTER);
+
+        // Action Listeners
+        tailoringButton.addActionListener(e -> cardLayout.show(mainPanel, "Tailoring"));
+        carpentryButton.addActionListener(e -> cardLayout.show(mainPanel, "Carpentry"));
+        electronicsButton.addActionListener(e -> cardLayout.show(mainPanel, "Electronics"));
+
+        homeItem.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
+        exitItem.addActionListener(e -> System.exit(0));
+    }
+
+    private JPanel createTutorialPanel(String title, String description) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        JTextArea descriptionArea = new JTextArea(description);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(new JScrollPane(descriptionArea), BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            VocationalTrainingHub app = new VocationalTrainingHub();
+            app.setVisible(true);
+        });
+    }
+}
